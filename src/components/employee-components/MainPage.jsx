@@ -1,12 +1,11 @@
 import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom"; // Import Link
 import TaskItem from "./TaskItem.jsx";
 import NotificationItem from "./NotificationItem";
 import AnnouncementItem from "./AnnouncementItem";
 import ArrowsLeftIcon from "../../assets/icons/ArrowsLeftIcon.jsx";
 import ArrowRightIcon from "../../assets/icons/ArrowRightIcon.jsx";
 import NotificationModal from "../../pages/employee-pages/NotificationModal.jsx";
-
 
 const announcements = [
   {
@@ -92,11 +91,13 @@ const MainPage = ({ openNoti }) => {
               label="Meeting"
               description="10:00 AM : Sketch note Client Meet"
             />
-            <TaskItem
-              color="bg-purple-400"
-              label="Project"
-              description="Gbjbuzz Portal"
-            />
+            <Link to="/gbjbuzz-slack">
+              <TaskItem
+                color="bg-purple-400"
+                label="Slack"
+                description="Gbjbuzz Portal"
+              />
+            </Link>
           </ul>
         </div>
         <div className="w-1/3 mt-8 flex flex-col justify-between">

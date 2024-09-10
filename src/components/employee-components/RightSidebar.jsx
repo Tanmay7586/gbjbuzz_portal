@@ -37,7 +37,7 @@ const RightSidebar = () => {
   };
 
   return (
-    <div className="w-3/12 py-3 px-6 bg-[#E1AD01]">
+    <div className="w-3/12 py-3 px-6 bg-white">
       <div className="p-3 rounded-lg bg-white mb-4">
         <div className="border border-gray-300 rounded-lg overflow-hidden">
           <Calendar
@@ -51,10 +51,10 @@ const RightSidebar = () => {
       <div className="p-3 rounded-lg  mb-4 transition duration-300 ease-in-out">
         <div className="flex justify-between items-center mb-5">
           <div className="font-semibold text-lg">
-            <span className="text-white">To Do</span> Today
+            <span className="text-yellow-500">To Do</span> Today
           </div>
           <button
-            className="bg-black text-[#E1AD01] px-3 py-2 rounded-2xl text-xs font-bold"
+            className="text-white bg-yellow-600 px-3 py-2 rounded-2xl text-xs font-bold"
             onClick={() => setShowInput(!showInput)}
           >
             {showInput ? "Cancel" : "+ Add"}
