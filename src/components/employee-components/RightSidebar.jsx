@@ -35,7 +35,6 @@ const RightSidebar = () => {
   const handleDeleteTodo = (todoToDelete) => {
     setTodos(todos.filter((todo) => todo !== todoToDelete));
   };
-
   return (
     <div className="w-3/12 py-3 px-6 bg-white">
       <div className="p-3 rounded-lg bg-white mb-4">
@@ -95,17 +94,27 @@ const RightSidebar = () => {
           ))}
         </ul>
       </div>
-
-      <div className="p-3 rounded-lg shadow-xl bg-white hover:bg-slate-100 transition duration-300 ease-in-out">
-        <div className="flex justify-between items-center mb-3">
-          <div className="font-semibold text-lg">
-            <span className="text-yellow-600">Upcoming</span> Events
+      <div className="p-6 rounded-lg bg-white shadow-2xl">
+        <div className="mb-6 flex justify-center  items-center">
+          <div className="flex flex-col items-center mr-2">
+            <span className="text-md font-bold">UP</span>
+            <span className="text-md font-bold">COMING</span>
           </div>
+          <div className="mx-2 h-12 w-px bg-gray-300"></div>
+          <span className="text-2xl font-bold">EVENTS</span>
         </div>
-        <ul>
-          <li className="mb-2">Team Meeting - August 1, 2024</li>
-          <li className="mb-2">Project Deadline - August 5, 2024</li>
-          <li className="mb-2">Company Retreat - August 15, 2024</li>
+        <ul className="space-y-3">
+          {[
+            { date: "12th July", event: "Annual Company Picnic" },
+            { date: "18th July", event: "Product Launch Meeting" },
+            { date: "25th July", event: "Quarterly Performance Review" },
+          ].map((item, index) => (
+            <li key={index} className="flex">
+              <span className="w-24 font-semibold text-right mr-4">{item.date}</span>
+              <span className="mr-2">-</span>
+              <span className="flex-1">{item.event}</span>
+            </li>
+          ))}
         </ul>
       </div>
     </div>

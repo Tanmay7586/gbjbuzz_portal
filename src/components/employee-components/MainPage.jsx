@@ -1,11 +1,12 @@
 import React, { useState } from "react";
-import { useNavigate, Link } from "react-router-dom"; // Import Link
+import { useNavigate, Link } from "react-router-dom";
 import TaskItem from "./TaskItem.jsx";
 import NotificationItem from "./NotificationItem";
 import AnnouncementItem from "./AnnouncementItem";
 import ArrowsLeftIcon from "../../assets/icons/ArrowsLeftIcon.jsx";
 import ArrowRightIcon from "../../assets/icons/ArrowRightIcon.jsx";
 import NotificationModal from "../../pages/employee-pages/NotificationModal.jsx";
+import MeetingModal from "./modals/MeetingModal.jsx";
 
 const announcements = [
   {
@@ -38,8 +39,9 @@ const announcements = [
 
 const MainPage = ({ openNoti }) => {
   const [currentIndex, setCurrentIndex] = useState(0);
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const [notificationCount, setNotificationCount] = useState(5); // Example count
+  const [isNotificationModalOpen, setIsNotificationModalOpen] = useState(false);
+  const [isMeetingModalOpen, setIsMeetingModalOpen] = useState(false);
+  const [notificationCount, setNotificationCount] = useState(5);
   const navigate = useNavigate();
   const itemsPerPage = 3;
 
@@ -60,9 +62,13 @@ const MainPage = ({ openNoti }) => {
   };
 
   const handleNotificationClick = () => {
-    setIsModalOpen(true);
-    setNotificationCount(0); // Reset the count after opening notifications
+    setIsNotificationModalOpen(true);
+    setNotificationCount(0);
     navigate("/notifications");
+  };
+
+  const handleMeetingClick = () => {
+    setIsMeetingModalOpen(true);
   };
 
   return (
@@ -90,6 +96,7 @@ const MainPage = ({ openNoti }) => {
               color="bg-blue-400"
               label="Meeting"
               description="10:00 AM : Sketch note Client Meet"
+              onClick={handleMeetingClick}
             />
             <Link to="/gbjbuzz-slack">
               <TaskItem
@@ -101,20 +108,30 @@ const MainPage = ({ openNoti }) => {
           </ul>
         </div>
         <div className="w-1/3 mt-8 flex flex-col justify-between">
-          <div className="flex flex-col items-center rounded-3xl shadow-lg bg-white p-3 h-full hover:bg-slate-100 transition duration-300 ease-in-out">
-            <p className="text-xl mb-3">Latest Notifications</p>
-            <ul className="flex-grow">
-              <NotificationItem message="Your leave request has been updated" />
-              <NotificationItem message="Your salary request is under review" />
-              <NotificationItem message="A new project has started" />
-              <NotificationItem message="Yesterday's task has been returned" />
+          <div className="flex flex-col items-start rounded-3xl shadow-lg bg-white p-6 h-full">
+            <div className="flex items-center justify-center">
+              <h2 className="text-xl font-bold mb-4">Latest Notification</h2>
+            </div>
+            <ul className="w-full">
+              <NotificationItem
+                name="SANTI CAZORLA"
+                message="Please remember to submit your project..."
+              />
+              <NotificationItem
+                name="GRANIT XHAXA"
+                message="Kindly coordinate with the finance team to..."
+              />
+              <NotificationItem
+                name="MARTIN ODEGAARD"
+                message="Please confirm receipt of the new policy..."
+              />
             </ul>
-            <p
-              className="text-blue-500 cursor-pointer mt-1 hover:bg-slate-200 px-2 py-1 rounded-xl transition duration-300 ease-in-out"
+            <button
               onClick={handleNotificationClick}
+              className="text-blue-500 mt-4 hover:underline self-center"
             >
               Show all
-            </p>
+            </button>
           </div>
         </div>
       </div>
@@ -145,8 +162,12 @@ const MainPage = ({ openNoti }) => {
         </div>
       </div>
       <NotificationModal
-        isOpen={isModalOpen}
-        onClose={() => setIsModalOpen(false)}
+        isOpen={isNotificationModalOpen}
+        onClose={() => setIsNotificationModalOpen(false)}
+      />
+      <MeetingModal
+        isOpen={isMeetingModalOpen}
+        onClose={() => setIsMeetingModalOpen(false)}
       />
     </div>
   );
