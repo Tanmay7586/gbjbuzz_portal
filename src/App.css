@@ -83,3 +83,8 @@ svg {
 .react-calendar__tile--rangeEnd {
   border-radius: 50%; /* Rounded shape for range start and end */
 }
+
+
+input::placeholder {
+  color: white;
+}

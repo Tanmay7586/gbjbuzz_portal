@@ -101,7 +101,7 @@ const MainPage = ({ openNoti }) => {
             <Link to="/gbjbuzz-slack">
               <TaskItem
                 color="bg-purple-400"
-                label="Slack"
+                label="GBJconnect"
                 description="Gbjbuzz Portal"
               />
             </Link>
