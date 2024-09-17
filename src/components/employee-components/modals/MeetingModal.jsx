@@ -4,10 +4,7 @@ import MeetingScheduleModal from "./MeetingScheduleModal";
 
 const MeetingModal = ({ isOpen, onClose }) => {
   const [isScheduling, setIsScheduling] = useState(false);
-
-  if (!isOpen) return null;
-
-  const meetings = [
+  const [meetings, setMeetings] = useState([
     {
       assigner: "Gunjan Jagnade",
       title: "Portal Meet",
@@ -44,9 +41,17 @@ const MeetingModal = ({ isOpen, onClose }) => {
       time: "10 PM",
       date: "11th September",
     },
-  ];
+  ]);
 
   const toggleScheduleForm = () => setIsScheduling(!isScheduling);
+
+  // Function to add a new meeting
+  const handleAddMeeting = (newMeeting) => {
+    setMeetings((prevMeetings) => [newMeeting, ...prevMeetings]); // Prepend the new meeting
+    setIsScheduling(false); // Close the schedule modal
+  };
+
+  if (!isOpen) return null;
 
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center">
@@ -55,7 +60,8 @@ const MeetingModal = ({ isOpen, onClose }) => {
           <MeetingScheduleModal
             isOpen={isScheduling}
             onClose={() => setIsScheduling(false)}
-            openMeetingModal={() => setIsScheduling(false)} // This toggles back to meeting list
+            openMeetingModal={() => setIsScheduling(false)}
+            addMeeting={handleAddMeeting} // Pass the addMeeting function
           />
         ) : (
           <>

@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { X } from "lucide-react";
 
-const MeetingScheduleModal = ({ isOpen, onClose, openMeetingModal }) => {
+const MeetingScheduleModal = ({ isOpen, onClose, openMeetingModal, addMeeting }) => {
   const [formData, setFormData] = useState({
     title: "",
     date: "",
@@ -23,8 +23,15 @@ const MeetingScheduleModal = ({ isOpen, onClose, openMeetingModal }) => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log("Meeting scheduled:", formData);
-    onClose();
+    const newMeeting = {
+      assigner: "You", // Assuming the current user is scheduling the meeting
+      title: formData.title,
+      date: formData.date,
+      time: formData.time,
+      link: formData.link,
+    };
+    addMeeting(newMeeting); // Add the new meeting to the list
+    onClose(); // Close the modal after submission
   };
 
   return (
@@ -111,13 +118,13 @@ const MeetingScheduleModal = ({ isOpen, onClose, openMeetingModal }) => {
             <button
               type="button"
               onClick={onClose}
-              className="px-6 py-2 bg-red-500 text-white rounded-lg hover:bg-red-600 transition duration-300"
+              className="px-6 py-2 bg-gray-300 rounded-lg"
             >
-              Discard
+              Cancel
             </button>
             <button
               type="submit"
-              className="px-6 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition duration-300"
+              className="px-6 py-2 bg-blue-500 hover:bg-blue-600 text-white rounded-lg"
             >
               Schedule
             </button>
