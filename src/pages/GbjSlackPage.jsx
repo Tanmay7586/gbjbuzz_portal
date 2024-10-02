@@ -1,5 +1,5 @@
 import React from "react";
-import GbjSlack from "../components/employee-components/GbjSlack";
+import GbjSlack from "../components/gbjconnect-component/GbjSlack";
 
 const GbjSlackPage = () => {
   return (
