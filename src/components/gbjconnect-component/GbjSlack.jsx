@@ -9,8 +9,16 @@ import {
   ChevronUp,
   X,
 } from "lucide-react";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogDescription,
+} from "@/components/ui/dialog";
+import { Input } from "@/components/ui/input";
+import { Button } from "@/components/ui/button";
 import "../../App.css";
-
 const GbjSlack = () => {
   const [channels] = useState([
     { name: "GBJBUZZPORTAL", unread: false },
@@ -26,7 +34,7 @@ const GbjSlack = () => {
       name: "Shwetank Gopnarayan",
       unread: true,
       count: 1,
-      image: "/shwetank.jpg", // Add image URL here
+      image: "/shwetank.jpg",
     },
   ]);
 
@@ -80,6 +88,53 @@ const GbjSlack = () => {
     channels.reduce((total, channel) => {
       return total + (channel.unread ? channel.count : 0);
     }, 0);
+
+  const [isChannelModalOpen, setIsChannelModalOpen] = useState(false);
+  const [isDMModalOpen, setIsDMModalOpen] = useState(false);
+  const [newChannelName, setNewChannelName] = useState("");
+  const [newChannelDescription, setNewChannelDescription] = useState("");
+  const [newChannelInvite, setNewChannelInvite] = useState("");
+  const [searchDM, setSearchDM] = useState("");
+
+  const handleCreateChannel = () => {
+    // Logic to create a new channel
+    const newChannel = {
+      name: newChannelName,
+      unread: false,
+      createdAt: new Date().toLocaleDateString(),
+    };
+    // Add the new channel to the channels list
+    // This is a simplification; you'd typically update this through a state management solution or API call
+    channels.push(newChannel);
+    setIsChannelModalOpen(false);
+    // Reset form fields
+    setNewChannelName("");
+    setNewChannelDescription("");
+    setNewChannelInvite("");
+  };
+
+  const handleStartDM = (memberName) => {
+    const existingDM = directMessages.find((dm) => dm.name === memberName);
+    if (!existingDM) {
+      const newDM = {
+        name: memberName,
+        unread: false,
+        count: 0,
+        image:
+          members.find((m) => m.name === memberName)?.image ||
+          "/api/placeholder/40/40",
+      };
+      setDirectMessages([...directMessages, newDM]);
+    }
+    setIsDMModalOpen(false);
+    setSearchDM("");
+    setSelectedDM(memberName);
+    setSelectedChannel(null);
+  };
+
+  const filteredMembers = members.filter((member) =>
+    member.name.toLowerCase().includes(searchDM.toLowerCase())
+  );
 
   return (
     <div className="flex h-screen bg-gray-800 text-white">
@@ -161,7 +216,10 @@ const GbjSlack = () => {
                 />
               )}
             </div>
-            <Plus className="w-4 h-4 text-gray-400" />
+            <Plus
+              className="w-4 h-4 text-gray-400 cursor-pointer"
+              onClick={() => setIsChannelModalOpen(true)}
+            />
           </div>
           {channelsVisible && (
             <ul className="mb-3">
@@ -192,7 +250,7 @@ const GbjSlack = () => {
           <div className="flex items-center justify-between mb-2">
             <div className="flex items-center">
               <h3 className="text-sm font-semibold text-gray-400 mr-1">
-                Direct Message
+                Direct Messages
               </h3>
               {dmVisible ? (
                 <ChevronUp
@@ -206,10 +264,13 @@ const GbjSlack = () => {
                 />
               )}
             </div>
-            <Plus className="w-4 h-4 text-gray-400" />
+            <Plus
+              className="w-4 h-4 text-gray-400 cursor-pointer"
+              onClick={() => setIsDMModalOpen(true)}
+            />
           </div>
           {dmVisible && (
-            <ul>
+            <ul className="mb-3">
               {directmessages.map((dm, index) => (
                 <li key={index} className="py-2 text-sm font-semibold">
                   <a
@@ -221,14 +282,7 @@ const GbjSlack = () => {
                         : "text-gray-300 hover:text-white"
                     }`}
                   >
-                    <div className="flex items-center">
-                      <img
-                        src={dm.image}
-                        alt={dm.name}
-                        className="w-6 h-6 rounded-full mr-2"
-                      />
-                      <span>{dm.name}</span>
-                    </div>
+                    <span>{dm.name}</span>
                     {dm.unread && (
                       <span className="bg-blue-500 text-white rounded-full px-2 text-xs">
                         {dm.count}
@@ -326,6 +380,105 @@ const GbjSlack = () => {
           </button>
         </div>
       </div>
+      <Dialog open={isChannelModalOpen} onOpenChange={setIsChannelModalOpen}>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>Create a New Channel</DialogTitle>
+            <DialogDescription>
+              Enter the details for your new channel.
+            </DialogDescription>
+          </DialogHeader>
+          <div className="grid gap-4 py-4">
+            <div className="grid grid-cols-4 items-center gap-4">
+              <label
+                htmlFor="channelName"
+                className="text-right text-sm font-medium"
+              >
+                Channel Name
+              </label>
+              <Input
+                id="channelName"
+                value={newChannelName}
+                onChange={(e) => setNewChannelName(e.target.value)}
+                className="col-span-3 text-sm px-3 py-2"
+              />
+            </div>
+            <div className="grid grid-cols-4 items-center gap-4">
+              <label
+                htmlFor="channelDescription"
+                className="text-right text-sm font-medium"
+              >
+                Description
+              </label>
+              <Input
+                id="channelDescription"
+                value={newChannelDescription}
+                onChange={(e) => setNewChannelDescription(e.target.value)}
+                className="col-span-3 text-sm px-3 py-2"
+              />
+            </div>
+            <div className="grid grid-cols-4 items-center gap-4">
+              <label
+                htmlFor="channelInvite"
+                className="text-right text-sm font-medium"
+              >
+                Invite by ID/Name
+              </label>
+              <Input
+                id="channelInvite"
+                value={newChannelInvite}
+                onChange={(e) => setNewChannelInvite(e.target.value)}
+                className="col-span-3 text-sm px-3 py-2"
+              />
+            </div>
+          </div>
+          <div className="flex justify-end">
+            <Button onClick={handleCreateChannel} className="text-sm px-4 py-2">
+              Create Channel
+            </Button>
+          </div>
+        </DialogContent>
+      </Dialog>
+
+      {/* Direct Message Creation Modal */}
+      <Dialog open={isDMModalOpen} onOpenChange={setIsDMModalOpen}>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>Start a Direct Message</DialogTitle>
+            <DialogDescription>
+              Search for a person to start a conversation.
+            </DialogDescription>
+          </DialogHeader>
+          <div className="py-4">
+            <Input
+              placeholder="Search people..."
+              value={searchDM}
+              onChange={(e) => setSearchDM(e.target.value)}
+              className="mb-4"
+            />
+            <ul className="space-y-2 max-h-60 overflow-y-auto">
+              {filteredMembers.map((member, index) => (
+                <li
+                  key={index}
+                  className="flex items-center justify-between p-2 hover:bg-gray-100 rounded"
+                >
+                  <div className="flex items-center">
+                    <img
+                      src={member.image}
+                      alt={member.name}
+                      className="w-8 h-8 rounded-full mr-2"
+                    />
+                    <span>{member.name}</span>
+                  </div>
+                  <Button onClick={() => handleStartDM(member.name)}>
+                    Start Chat
+                  </Button>
+                </li>
+              ))}
+            </ul>
+          </div>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 };
