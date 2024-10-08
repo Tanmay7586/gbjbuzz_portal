@@ -30,26 +30,32 @@ const LoginPage = ({ showLogo }) => {
 
   const handleLogin = (e) => {
     e.preventDefault();
-  
+
     // Hardcoded credentials for demonstration
     const validUserCredentials = {
       username: "user",
       password: "password",
       role: "employee", // Can be "employee" or "hr"
     };
-  
+
     const validHrCredentials = {
       username: "hr",
       password: "hrpassword",
       role: "hr",
     };
-  
+
     const validSalesCredentials = {
       username: "sales",
       password: "salespassword",
       role: "sales",
     };
-  
+
+    const validFinanceCredentials = {
+      username: "finance",
+      password: "financepassword",
+      role: "finance",
+    };
+
     if (
       username === validUserCredentials.username &&
       password === validUserCredentials.password
@@ -65,6 +71,11 @@ const LoginPage = ({ showLogo }) => {
       password === validSalesCredentials.password
     ) {
       navigate("/sales-home"); // Navigate to SALES homepage
+    } else if (
+      username === validFinanceCredentials.username &&
+      password === validFinanceCredentials.password
+    ) {
+      navigate("/finance-home"); // Navigate to FINANCE homepage
     } else {
       alert("Invalid credentials. Please try again.");
     }

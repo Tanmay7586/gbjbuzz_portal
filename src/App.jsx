@@ -16,6 +16,7 @@ import EmpTasks from "./pages/employee-pages/EmpTasks";
 import Legal from "./pages/employee-pages/LegalPage";
 import EmployeeFeed from "./pages/employee-pages/EmplyeeFeed";
 import GbjSlackPage from "./pages/GbjSlackPage";
+import FinanceHomePage from "./pages/finance-pages/FinanceHomePage";
 
 function App() {
   return (
@@ -51,6 +52,7 @@ function App() {
         <Route path="/legal" element={<Legal />} />
         <Route path="/feedback" element={<EmployeeFeed />} />
         <Route path="/gbjbuzz-slack" element={<GbjSlackPage />} />
+        <Route path="/finance-home" element={<FinanceHomePage />} />
       </Routes>
     </Router>
   );
