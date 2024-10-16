@@ -16,12 +16,20 @@ const AddMemberModal = ({
   handleAddMember,
 }) => {
   const [searchTerm, setSearchTerm] = useState("");
-  
-  // Filter members based on the search term
-  const filteredMembers = members.filter((member) =>
-    member.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    member.id.toLowerCase().includes(searchTerm.toLowerCase())
-  );
+
+  // Filter members based on the search term, with added checks
+  const filteredMembers = members.filter((member) => {
+    const nameMatch =
+      member.name &&
+      typeof member.name === "string" &&
+      member.name.toLowerCase().includes(searchTerm.toLowerCase());
+    const idMatch =
+      member.id &&
+      typeof member.id === "string" &&
+      member.id.toLowerCase().includes(searchTerm.toLowerCase());
+
+    return nameMatch || idMatch;
+  });
 
   return (
     <Dialog open={isAddMemberModalOpen} onOpenChange={setIsAddMemberModalOpen}>

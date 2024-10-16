@@ -3,13 +3,21 @@ import { useNavigate } from "react-router-dom";
 import TaskItem from "../employee-components/TaskItem.jsx";
 import FinanceSectionItems from "./FinanceSectionItems.jsx";
 import ReportsSection from "./ReportsSection.jsx";
+import InvoiceModal from "./InvoiceModal.jsx"; // Make sure this path is correct
 
 const MainPage = () => {
   const navigate = useNavigate();
+  const [isInvoiceModalOpen, setIsInvoiceModalOpen] = useState(false);
 
   const handleFinanceSectionClick = (path) => {
-    navigate(path);
-  };
+    if (path === "/finance/budget-planning") {
+      navigate("/transactions"); // Assuming you set up a route for "/transactions"
+    } else if (path === "/finance/report-management") {
+      setIsInvoiceModalOpen(true);
+    } else {
+      navigate(path);
+    }
+  }; 
 
   return (
     <div className="w-8/12 p-3">
@@ -45,12 +53,20 @@ const MainPage = () => {
           </ul>
         </div>
         <div className="w-1/3 mt-8 flex flex-col justify-between">
-          <div className="flex flex-col items-center rounded-3xl p-3 h-full ">
-            <ul className="flex-grow cursor-pointer">
-              <li onClick={() => handleFinanceSectionClick("/finance/budget-planning")}>
+          <div className="flex flex-col items-center rounded-3xl p-3 h-full">
+            <ul className="flex-grow font-semibold cursor-pointer">
+              <li
+                onClick={() =>
+                  handleFinanceSectionClick("/finance/budget-planning")
+                }
+              >
                 <FinanceSectionItems message="Transactions" />
               </li>
-              <li onClick={() => handleFinanceSectionClick("/finance/report-management")}>
+              <li
+                onClick={() =>
+                  handleFinanceSectionClick("/finance/report-management")
+                }
+              >
                 <FinanceSectionItems message="Invoice" />
               </li>
             </ul>
@@ -60,6 +76,11 @@ const MainPage = () => {
       <div className="mt-8">
         <ReportsSection />
       </div>
+
+      <InvoiceModal
+        isOpen={isInvoiceModalOpen}
+        onOpenChange={setIsInvoiceModalOpen}
+      />
     </div>
   );
 };
